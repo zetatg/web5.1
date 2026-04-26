@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Studio — Creative Solutions</title>
+  <meta name="description" content="Apex Studio delivers bold branding, web design, and digital strategy for businesses ready to stand out." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Variables ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #FAF9F6;
+      --dark:     #1A1A2E;
+      --accent:   #E8683A;
+      --text:     #2D2D2D;
+      --muted:    #7A7A7A;
+      --border:   #E2E0DA;
+      --card-bg:  #FFFFFF;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius: 4px;
+      --max-w: 1100px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    .container {
+      max-width: var(--max-w);
+      margin-inline: auto;
+      padding-inline: clamp(1rem, 4vw, 2.5rem);
+    }
+
+    /* ── EXTRA 1: Sticky nav with scroll-triggered style ── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.4rem 0;
+      transition: background var(--transition), padding var(--transition), box-shadow var(--transition);
+    }
+
+    #navbar.scrolled {
+      background: rgba(250, 249, 246, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 0.85rem 0;
+      box-shadow: 0 1px 0 var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--dark); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: var(--radius);
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+
+    .nav-cta:hover { background: #cf5a2e !important; transform: translateY(-1px); }
+
+    /* ── EXTRA 2: Hamburger / mobile menu ─────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 1100;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--dark);
+      transition: transform var(--transition), opacity var(--transition);
+      transform-origin: center;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--dark);
+      transition: color var(--transition);
+    }
+
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ── Hero ─────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 0 5rem;
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(232,104,58,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(232,104,58,0.4);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.9rem 2rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background var(--transition), transform var(--transition);
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: #cf5a2e; transform: translateY(-2px); }
+
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.8);
+      padding: 0.9rem 2rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: border-color var(--transition), color var(--transition);
+      display: inline-block;
+    }
+
+    .btn-outline:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .hero-stat span {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Section base ─────────────────────────────────── */
+    section { padding: clamp(4rem, 8vw, 7rem) 0; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 480px;
+      font-weight: 300;
+    }
+
+    .section-header { margin-bottom: 3.5rem; }
+
+    /* ── EXTRA 3: Scroll-triggered fade-in ────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Services ─────────────────────────────────────── */
+    #services { background: var(--bg); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(232,104,58,0.1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .service-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .service-card p { font-size: 0.9rem; color: var(--muted); font-weight: 300; }
+
+    /* ── About ────────────────────────────────────────── */
+    #about { background: var(--dark); }
+
+    #about .section-title { color: #fff; }
+    #about .section-label { color: var(--accent); }
+    #about .section-sub { color: rgba(255,255,255,0.5); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-image {
+      aspect-ratio: 4/5;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-image::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      right: -20%;
+      width: 60%;
+      height: 60%;
+      background: var(--accent);
+      opacity: 0.15;
+      border-radius: 50%;
+    }
+
+    .about-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .about-text p {
+      color: rgba(255,255,255,0.6);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-list { margin-bottom: 2rem; }
+
+    .about-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .about-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .btn-accent-outline {
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: background var(--transition), color var(--transition);
+      display: inline-block;
+    }
+
+    .btn-accent-outline:hover { background: var(--accent); color: #fff; }
+
+    /* ── Testimonials ─────────────────────────────────── */
+    #testimonials { background: var(--bg); }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .testi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .testi-quote {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--dark);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .testi-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .testi-info strong {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .testi-info span {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .stars { color: var(--accent); font-size: 0.85rem; margin-bottom: 1rem; }
+
+    /* ── EXTRA 4: Contact form with validation ────────── */
+    #contact { background: var(--bg); border-top: 1px solid var(--border); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .contact-detail svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 1.8; flex-shrink: 0; }
+
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232,104,58,0.12);
+    }
+
+    .form-group input.error,
+    .form-group textarea.error { border-color: #e53e3e; }
+
+    .form-group .field-error {
+      display: none;
+      font-size: 0.78rem;
+      color: #e53e3e;
+      margin-top: 0.3rem;
+    }
+
+    .form-group .field-error.show { display: block; }
+
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .btn-submit:hover { background: #cf5a2e; transform: translateY(-1px); }
+
+    .form-success {
+      display: none;
+      background: rgba(72,187,120,0.1);
+      border: 1px solid rgba(72,187,120,0.4);
+      color: #276749;
+      padding: 1rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .form-success.show { display: block; }
+
+    /* ── Footer ───────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+      margin-top: 0.75rem;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul li { margin-bottom: 0.6rem; }
+
+    .footer-col ul li a {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.55);
+      transition: color var(--transition);
+    }
+
+    .footer-col ul li a:hover { color: #fff; }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ── Responsive ───────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-image { aspect-ratio: 16/9; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      .hero-stats { gap: 1.75rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-outline { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav id="navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">Apex<span>.</span></a>
+      <ul class="nav-links" role="list">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#testimonials">Work</a></li>
+        <li><a href="#contact" class="nav-cta">Get in touch</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#testimonials" class="mobile-link">Work</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero" aria-label="Hero">
+    <div class="container">
+      <span class="hero-label">Creative Studio — Est. 2019</span>
+      <h1 class="hero-title">We build brands<br />that <em>people</em><br />remember.</h1>
+      <p class="hero-sub">Apex Studio partners with forward-thinking businesses to craft identities, digital experiences, and strategies that cut through the noise.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">See our services</a>
+        <a href="#contact" class="btn-outline">Start a project</a>
+      </div>
+      <div class="hero-stats" aria-label="Studio stats">
+        <div class="hero-stat">
+          <strong>120+</strong>
+          <span>Projects delivered</span>
+        </div>
+        <div class="hero-stat">
+          <strong>98%</strong>
+          <span>Client satisfaction</span>
+        </div>
+        <div class="hero-stat">
+          <strong>6 yrs</strong>
+          <span>In the industry</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SERVICES ══ -->
+  <section id="services" aria-labelledby="services-title">
+    <div class="container">
+      <header class="section-header fade-up">
+        <p class="section-label">What we do</p>
+        <h2 class="section-title" id="services-title">Services built<br />for growth</h2>
+        <p class="section-sub">From strategy to execution, we cover every touchpoint of your brand's digital presence.</p>
+      </header>
+      <div class="services-grid">
+        <article class="service-card fade-up">
+          <div class="service-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Brand Identity</h3>
+          <p>Logos, color systems, typography, and brand guidelines that make you instantly recognizable and consistently compelling.</p>
+        </article>
+        <article class="service-card fade-up" style="transition-delay:0.1s">
+          <div class="service-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <h3>Web Design &amp; Dev</h3>
+          <p>Fast, accessible, and beautifully crafted websites that convert visitors into customers and reflect your brand at its best.</p>
+        </article>
+        <article class="service-card fade-up" style="transition-delay:0.2s">
+          <div class="service-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3>Digital Strategy</h3>
+          <p>Data-informed roadmaps, content strategy, and growth planning that keep your business ahead of the curve.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ABOUT ══ -->
+  <section id="about" aria-labelledby="about-title">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image fade-up" aria-hidden="true">
+          <div class="about-img-placeholder">Studio photo</div>
+        </div>
+        <div class="about-text fade-up" style="transition-delay:0.15s">
+          <p class="section-label">About us</p>
+          <h2 class="section-title" id="about-title">Craft meets strategy, always.</h2>
+          <p>We're a small, senior team of designers and strategists. No juniors handed off your project — every engagement gets our full attention from day one.</p>
+          <ul class="about-list" aria-label="Key values">
+            <li>Human-centered design process</li>
+            <li>Transparent project management</li>
+            <li>Strategy before aesthetics</li>
+            <li>Long-term partnership mindset</li>
+          </ul>
+          <a href="#contact" class="btn-accent-outline">Work with us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS ══ -->
+  <section id="testimonials" aria-labelledby="testi-title">
+    <div class="container">
+      <header class="section-header fade-up">
+        <p class="section-label">Client stories</p>
+        <h2 class="section-title" id="testi-title">Words from our partners</h2>
+      </header>
+      <div class="testi-grid">
+        <article class="testi-card fade-up">
+          <p class="stars" aria-label="5 stars">★★★★★</p>
+          <p class="testi-quote">"Apex completely transformed how we present ourselves online. Our conversion rate jumped 40% within two months of launch."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" aria-hidden="true">SR</div>
+            <div class="testi-info">
+              <strong>Sara Reyes</strong>
+              <span>CEO, Bloom Wellness</span>
+            </div>
+          </div>
+        </article>
+        <article class="testi-card fade-up" style="transition-delay:0.1s">
+          <p class="stars" aria-label="5 stars">★★★★★</p>
+          <p class="testi-quote">"The brand identity they created for us is exactly what we needed to attract enterprise clients. Absolutely worth every penny."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" aria-hidden="true">MK</div>
+            <div class="testi-info">
+              <strong>Mark Kline</strong>
+              <span>Founder, NorthStack</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ══ -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="fade-up">
+          <p class="section-label">Contact</p>
+          <h2 class="section-title" id="contact-title">Let's start something great.</h2>
+          <p class="section-sub" style="margin-bottom:2rem">Tell us about your project and we'll get back to you within 24 hours.</p>
+          <div class="contact-detail">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@apexstudio.co
+          </div>
+          <div class="contact-detail">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            San Francisco, CA
+          </div>
+        </div>
+
+        <form id="contactForm" novalidate class="fade-up" style="transition-delay:0.15s" aria-label="Contact form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First name</label>
+              <input type="text" id="fname" name="fname" placeholder="Jane" autocomplete="given-name" />
+              <span class="field-error" id="fname-error">Please enter your first name.</span>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last name</label>
+              <input type="text" id="lname" name="lname" placeholder="Doe" autocomplete="family-name" />
+              <span class="field-error" id="lname-error">Please enter your last name.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="jane@company.com" autocomplete="email" />
+            <span class="field-error" id="email-error">Please enter a valid email address.</span>
+          </div>
+          <div class="form-group">
+            <label for="service">Service of interest</label>
+            <select id="service" name="service">
+              <option value="">Select a service…</option>
+              <option value="brand">Brand Identity</option>
+              <option value="web">Web Design &amp; Dev</option>
+              <option value="strategy">Digital Strategy</option>
+              <option value="other">Other / Not sure yet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Your message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your project, timeline, and goals…"></textarea>
+            <span class="field-error" id="message-error">Please include a brief message.</span>
+          </div>
+          <button type="submit" class="btn-submit">Send message →</button>
+          <div class="form-success" id="formSuccess" role="alert">
+            ✓ Message sent! We'll be in touch within 24 hours.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;">Apex<span style="color:#E8683A">.</span></span>
+          <p>A creative studio building brands and digital experiences for the next generation of business.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul role="list">
+            <li><a href="#services">Brand Identity</a></li>
+            <li><a href="#services">Web Design</a></li>
+            <li><a href="#services">Digital Strategy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul role="list">
+            <li><a href="#about">About</a></li>
+            <li><a href="#testimonials">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Apex Studio. All rights reserved.</span>
+        <span>Privacy Policy · Terms of Service</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* EXTRA 1 – Sticky nav scroll effect */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* EXTRA 2 – Hamburger / mobile menu */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    /* EXTRA 3 – Scroll-triggered fade-in (IntersectionObserver) */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* EXTRA 4 – Contact form validation */
+    const form = document.getElementById('contactForm');
+
+    function showError(id, errorId, show) {
+      const input = document.getElementById(id);
+      const error = document.getElementById(errorId);
+      if (input && error) {
+        input.classList.toggle('error', show);
+        error.classList.toggle('show', show);
+      }
+    }
+
+    function validate() {
+      let valid = true;
+      const fname = document.getElementById('fname').value.trim();
+      const lname = document.getElementById('lname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      showError('fname', 'fname-error', !fname);      if (!fname) valid = false;
+      showError('lname', 'lname-error', !lname);      if (!lname) valid = false;
+      showError('email', 'email-error', !emailRe.test(email)); if (!emailRe.test(email)) valid = false;
+      showError('message', 'message-error', !message); if (!message) valid = false;
+      return valid;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (validate()) {
+        document.getElementById('formSuccess').classList.add('show');
+        form.reset();
+        setTimeout(() => document.getElementById('formSuccess').classList.remove('show'), 5000);
+      }
+    });
+
+    ['fname','lname','email','message'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        document.getElementById(id).classList.remove('error');
+        const errEl = document.getElementById(id + '-error');
+        if (errEl) errEl.classList.remove('show');
+      });
+    });
+  </script>
+</body>
+</html>
